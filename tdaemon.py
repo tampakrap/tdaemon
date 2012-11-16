@@ -226,7 +226,7 @@ class Watcher(object):
         print l
         n = pynotify.Notification(title, content, image)
         n.show()
-
+        sys.stdout.flush()
 
     def run_tests(self):
         """Execute tests"""

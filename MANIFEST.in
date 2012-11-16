@@ -1,0 +1,3 @@
+exclude test.py
+exclude README.md
+exclude MANIFEST.in

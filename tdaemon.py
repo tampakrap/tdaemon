@@ -13,15 +13,14 @@ file for more details.
 
 import sys
 import os
-import optparse
+import argparse
 from time import sleep
 import hashlib
 import subprocess
 import datetime
 import re
-import subprocess
 
-SPECIAL_CHARS_REGEX_PATTERN = r'[#&;`|*?~<>^()\[\]{}$\\]+' 
+SPECIAL_CHARS_REGEX_PATTERN = r'[#&;`|*?~<>^()\[\]{}$\\]+'
 IGNORE_EXTENSIONS = ('pyc', 'pyo')
 IGNORE_DIRS = ('.bzr', '.git', '.hg', '.darcs', '.svn', '.tox')
 IMPLEMENTED_TEST_PROGRAMS = ('nose', 'nosetests', 'django', 'py', 'symfony',
@@ -53,7 +52,7 @@ def ask(message='Are you sure? [y/N]'):
 def escapearg(args):
     """Escapes characters you don't want in arguments (preventing shell
     injection)"""
-    return re.sub(SPECIAL_CHARS_REGEX_PATTERN, '', args) 
+    return re.sub(SPECIAL_CHARS_REGEX_PATTERN, '', args)
 
 class Watcher(object):
     """
@@ -63,7 +62,7 @@ class Watcher(object):
     file_list = {}
     debug = False
 
-    def __init__(self, file_path, test_program, debug=False, custom_args='', 
+    def __init__(self, file_path, test_program, debug=False, custom_args='',
         ignore_dirs=None):
         # Safe filter
         custom_args = escapearg(custom_args)
@@ -118,7 +117,7 @@ class Watcher(object):
                 sys.exit('django is not available on your system. Please install it and try to run it again')
         if self.test_program == 'phpunit':
             try:
-                process = subprocess.check_call(['phpunit','--version']) 
+                process = subprocess.check_call(['phpunit','--version'])
             except:
                 sys.exit('phpunit is not available on your system. Please install it and try to run it again')
 
@@ -231,35 +230,33 @@ def main(prog_args=None):
     if prog_args is None:
         prog_args = sys.argv
 
-    parser = optparse.OptionParser()
-    parser.usage = """Usage: %[prog] [options] [<path>]"""
-    parser.add_option("-t", "--test-program", dest="test_program",
+    parser = argparse.ArgumentParser(description="Test Daemon in Python")
+    parser.add_argument('dir', nargs='?', default=os.getcwd())
+    parser.add_argument("-t", "--test-program", dest="test_program",
         default="nose", help="specifies the test-program to use. Valid values"
         " include `nose` (or `nosetests`), `django`, `py` (for `py.test`), "
         '`symfony`, `jelix` and `phpunit`')
-    parser.add_option("-d", "--debug", dest="debug", action="store_true",
+    parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=False)
-    parser.add_option('-s', '--size-max', dest='size_max', default=25,
+    parser.add_argument('-s', '--size-max', dest='size_max', default=25,
         type="int", help="Sets the maximum size (in MB) of files.")
-    parser.add_option('--custom-args', dest='custom_args', default='',
-        type="str",
+    parser.add_argument('--custom-args', dest='custom_args', default='',
         help="Defines custom arguments to pass after the test program command")
-    parser.add_option('--ignore-dirs', dest='ignore_dirs', default='',
-        type="str",
+    parser.add_argument('--ignore-dirs', dest='ignore_dirs', default='',
         help="Defines directories to ignore.  Use a comma-separated list.")
 
-    opt, args = parser.parse_args(prog_args)
+    args = parser.parse_args()
 
-    if args[1:]:
-        path = args[1]
+    if args.dir:
+        path = args.dir
     else:
         path = '.'
 
     try:
-        watcher = Watcher(path, opt.test_program, opt.debug, opt.custom_args, 
-            opt.ignore_dirs)
+        watcher = Watcher(path, args.test_program, args.debug, args.custom_args,
+            args.ignore_dirs)
         watcher_file_size = watcher.file_sizes()
-        if watcher_file_size > opt.size_max:
+        if watcher_file_size > args.size_max:
             message =  "It looks like the total file size (%dMb) is larger  than the `max size` option (%dMb).\nThis may slow down the file comparison process, and thus the daemon performances.\nDo you wish to continue? [y/N] " % (watcher_file_size, opt.size_max)
 
             if not ask(message):

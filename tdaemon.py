@@ -239,7 +239,7 @@ def main(prog_args=None):
     parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=False)
     parser.add_argument('-s', '--size-max', dest='size_max', default=25,
-        type="int", help="Sets the maximum size (in MB) of files.")
+        type=int, help="Sets the maximum size (in MB) of files.")
     parser.add_argument('--custom-args', dest='custom_args', default='',
         help="Defines custom arguments to pass after the test program command")
     parser.add_argument('--ignore-dirs', dest='ignore_dirs', default='',

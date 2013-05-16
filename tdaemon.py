@@ -19,6 +19,7 @@ import hashlib
 import subprocess
 import datetime
 import re
+import pynotify
 
 SPECIAL_CHARS_REGEX_PATTERN = r'[#&;`|*?~<>^()\[\]{}$\\]+'
 IGNORE_EXTENSIONS = ('pyc', 'pyo')
@@ -203,10 +204,25 @@ class Watcher(object):
 
     def run(self, cmd):
         """Runs the appropriate command"""
+        pynotify.init("Basic")
         print datetime.datetime.now()
-        output = subprocess.Popen(cmd, shell=True)
-        output = output.communicate()[0]
-        print output
+        output = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
+        output = output.communicate()
+        content = ''
+        status = ''
+        result = ''
+        for l in output:
+            for line in l.split('\n'):
+                if line.startswith('Ran'):
+                    result = line
+                elif line.startswith('OK') or line.startswith('FAIL'):
+                    status = line
+                content = '%s\n%s' % (status, result)
+        title = 'tdaemon results'
+        print l
+        n = pynotify.Notification(title, content)
+        n.show()
+
 
     def run_tests(self):
         """Execute tests"""

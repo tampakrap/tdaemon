@@ -217,7 +217,7 @@ class Watcher(object):
             for line in l.split('\n'):
                 if line.startswith('Ran'):
                     result = line
-                elif line.startswith('OK'):
+                elif line.startswith('OK') or line.startswith('FAILED'):
                     status = line
                     if status.startswith('OK'):
                         image = IMG_PATH + 'button_green.png'

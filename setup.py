@@ -1,3 +1,4 @@
+from setuptools import setup, find_packages
 try:
     from setuptools import setup
 except ImportError:
@@ -9,11 +10,13 @@ setup(
     maintainer = "John Paulett",
     maintainer_email = "john@7oars.com",
     description = "Test Daemon",
-    long_description = "The test daemon watches the content of files in a directory and if any of them changes (the content is edited), it runs the tests.",
+    long_description = open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     url = "http://github.com/brunobord/tdaemon",
     license = "MIT",
     platforms = ['POSIX', 'Windows'],
     keywords = ['test', 'testing', 'noestests', 'django', 'py.test'],
+    packages = find_packages(),
+    data_files = [('', ['LICENSE'])],
     classifiers = [
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development :: Testing",
@@ -21,11 +24,11 @@ setup(
         "Intended Audience :: Developers",
     ],
     entry_points = {
-      'console_scripts': [
-        'tdaemon = tdaemon:main',
-      ],
+        'console_scripts': [
+            'tdaemon = tdaemon:main',
+        ],
     },
     py_modules = ['tdaemon'],
-
+    include_package_data = True,
 )
 

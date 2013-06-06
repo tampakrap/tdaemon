@@ -211,18 +211,17 @@ class Watcher(object):
         content = ''
         status = ''
         result = ''
+        IMG_PATH = os.path.dirname(os.path.realpath(__file__)) + '/img/'
+        image = IMG_PATH + 'button_red.png'
         for l in output:
             for line in l.split('\n'):
                 if line.startswith('Ran'):
                     result = line
-                elif line.startswith('OK') or line.startswith('FAIL'):
+                elif line.startswith('OK'):
                     status = line
-                    IMG_PATH = os.path.dirname(os.path.realpath(__file__)) + '/img/'
                     if status.startswith('OK'):
                         image = IMG_PATH + 'button_green.png'
-                    else:
-                        image = IMG_PATH + 'button_red.png'
-                content = '%s\n%s' % (status, result)
+            content = '%s\n%s' % (status, result)
         title = 'tdaemon results'
         print l
         n = pynotify.Notification(title, content, image)

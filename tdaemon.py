@@ -25,7 +25,7 @@ SPECIAL_CHARS_REGEX_PATTERN = r'[#&;`|*?~<>^()\[\]{}$\\]+'
 IGNORE_EXTENSIONS = ('pyc', 'pyo')
 IGNORE_DIRS = ('.bzr', '.git', '.hg', '.darcs', '.svn', '.tox')
 IMPLEMENTED_TEST_PROGRAMS = ('nose', 'nosetests', 'django', 'py', 'symfony',
-    'jelix', 'phpunit', 'sphinx',
+    'jelix', 'phpunit', 'sphinx', 'unittest'
 )
 
 # -------- Exceptions
@@ -146,9 +146,11 @@ class Watcher(object):
             cmd = 'phpunit'
         elif self.test_program == 'sphinx':
             cmd = 'make html'
+        elif self.test_program == 'unittest':
+            cmd = 'python -m unittest'
 
         if not cmd:
-            raise InvalidTestProgram("The test program %s is unknown. Valid options are: `nose`, `django` and `py`" % self.test_program)
+            raise InvalidTestProgram("The test program %s is unknown. Valid options are: `nose`, `django`, `jelix`, `phpunit`, `sphinx`, `py` and `unittest`" % self.test_program)
 
         # adding custom args
         if self.custom_args:
@@ -255,7 +257,7 @@ def main(prog_args=None):
     parser.add_argument("-t", "--test-program", dest="test_program",
         default="nose", help="specifies the test-program to use. Valid values"
         " include `nose` (or `nosetests`), `django`, `py` (for `py.test`), "
-        '`symfony`, `jelix` and `phpunit`')
+        '`symfony`, `jelix`, `phpunit` and `unittest`')
     parser.add_argument("-d", "--debug", dest="debug", action="store_true",
         default=False)
     parser.add_argument('-s', '--size-max', dest='size_max', default=25,

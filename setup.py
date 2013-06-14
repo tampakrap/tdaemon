@@ -9,19 +9,15 @@ setup(
     maintainer="John Paulett",
     maintainer_email="john@7oars.com",
     description="Test Daemon",
-    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
+    long_description=open(
+        os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     url="http://github.com/brunobord/tdaemon",
     license="MIT",
     platforms=['POSIX', 'Windows'],
     py_modules=['tdaemon'],
     keywords=['test', 'testing', 'noestests', 'django', 'py.test'],
-    packages=find_packages(),
-    data_files=[
-       ('img', [
-            'img/button_green.png',
-            'img/button_red.png',
-        ]),
-    ],
+    packages=['tdaemon'],
+    package_data={'': ['img/button_green.png', 'img/button_red.png'], },
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development :: Testing",

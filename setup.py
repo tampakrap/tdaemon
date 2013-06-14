@@ -13,9 +13,15 @@ setup(
     url="http://github.com/brunobord/tdaemon",
     license="MIT",
     platforms=['POSIX', 'Windows'],
+    py_modules=['tdaemon'],
     keywords=['test', 'testing', 'noestests', 'django', 'py.test'],
     packages=find_packages(),
-    data_files=[('', ['LICENSE'])],
+    data_files=[
+       ('img', [
+            'img/button_green.png',
+            'img/button_red.png',
+        ]),
+    ],
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development :: Testing",
@@ -27,6 +33,4 @@ setup(
             'tdaemon = tdaemon:main',
         ],
     },
-    py_modules=['tdaemon'],
-    include_package_data=True,
 )

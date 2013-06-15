@@ -1,1 +1,3 @@
 recursive-include img *
+include README.md
+include LICENSE

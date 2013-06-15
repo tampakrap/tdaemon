@@ -18,6 +18,7 @@ setup(
     keywords=['test', 'testing', 'noestests', 'django', 'py.test'],
     packages=['tdaemon'],
     package_data={'': ['img/button_green.png', 'img/button_red.png'], },
+    include_package_data=True,
     classifiers=[
         "License :: OSI Approved :: MIT License",
         "Topic :: Software Development :: Testing",

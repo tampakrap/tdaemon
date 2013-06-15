@@ -5,7 +5,7 @@ import os
 
 setup(
     name="tdaemon",
-    version="0.1.5",
+    version="0.1.6",
     maintainer="John Paulett",
     maintainer_email="john@7oars.com",
     description="Test Daemon",
